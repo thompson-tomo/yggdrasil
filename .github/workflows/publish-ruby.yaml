@@ -17,10 +17,10 @@ jobs:
             platform: x86_64-linux-musl
           - binary: libyggdrasilffi_arm64-musl.so
             platform: aarch64-linux-musl
+          # - binary: yggdrasilffi_x86_64.dll
+          #   platform: x64-mingw32
           - binary: yggdrasilffi_x86_64.dll
-            platform: x64-mingw32
-          - binary: yggdrasilffi_x86_64.dll
-            platform: x64-mingw32-ucrt            
+            platform: x64-mingw32-ucrt
           - binary: yggdrasilffi_arm64.dll
             platform: arm64-mingw32
           - binary: libyggdrasilffi_x86_64.dylib
@@ -171,23 +171,23 @@ jobs:
           path: ruby-engine/${{ env.gem_file_name }}
 
 
-  publish_gems:
-    runs-on: ubuntu-latest
-    needs: [build_single_binary_gems, build_jruby_gems]
-    steps:
-      - uses: actions/download-artifact@v4
-        name: Download artifacts
-        with:
-          pattern: yggdrasil-engine-*
-          path: gems
+  # publish_gems:
+  #   runs-on: ubuntu-latest
+  #   needs: [build_single_binary_gems, build_jruby_gems]
+  #   steps:
+  #     - uses: actions/download-artifact@v4
+  #       name: Download artifacts
+  #       with:
+  #         pattern: yggdrasil-engine-*
+  #         path: gems
 
-      - name: Publish Gems
-        run: |
-          cd gems
-          find . -name "*.gem" -type f | while read -r gem_file; do
-            echo "Pushing $gem_file..."
-            gem push "$gem_file"
-          done
-        env:
-          GEM_HOST_API_KEY: ${{ secrets.GEMS_PUBLISH_KEY }}
+  #     - name: Publish Gems
+  #       run: |
+  #         cd gems
+  #         find . -name "*.gem" -type f | while read -r gem_file; do
+  #           echo "Pushing $gem_file..."
+  #           gem push "$gem_file"
+  #         done
+  #       env:
+  #         GEM_HOST_API_KEY: ${{ secrets.GEMS_PUBLISH_KEY }}
 
